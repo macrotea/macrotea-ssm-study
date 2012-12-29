@@ -15,6 +15,7 @@ import com.google.code.ssm.providers.CacheException;
 import com.mtea.ssm.dao.UserDao;
 import com.mtea.ssm.model.User;
 import com.mtea.ssm.service.UserCacheService;
+import com.mtea.ssm.util.PrintUtil;
 
 /**
  * @author macrotea@qq.com
@@ -36,8 +37,6 @@ public class UserCacheServiceTest extends AbstractTestCase {
 	@Test
 	public void getUserByIdFromCache() throws InterruptedException, TimeoutException, CacheException {
 		
-		System.out.println(" -> cache.getName(): " + cache.getName());
-		
 		while (true) {
 			User u = mockUser();
 			userDao.save(u);
@@ -46,29 +45,30 @@ public class UserCacheServiceTest extends AbstractTestCase {
 			StopWatch watch = new StopWatch();
 			watch.start();
 			User userFirstLoad = userCacheService.getUserByIdFromCache(u.getId());
-			System.out.println(" -> userFirstLoad: " + userFirstLoad.toString());
+			PrintUtil.formatPrint("userFirstLoad: " + userFirstLoad.toString());
 			watch.stop();
 
 			long t1 = watch.getTotalTimeMillis();
-			System.out.println(" -> 首次从数据库中加载User放入缓存中,而加载时间为: " + t1);
+			PrintUtil.formatPrint("首次从数据库中加载User放入缓存中,而加载时间为: " + t1);
 			
 			System.out.println();
 
 			//userFromCache
 			watch.start();
 			User userFromCache = userCacheService.getUserByIdFromCache(u.getId());
-			userCacheService.getUserByIdFromCache(u.getId());
-			userCacheService.getUserByIdFromCache(u.getId());
-			System.out.println(" -> userFromCache: " + userFromCache.toString());
+			for (int i = 0; i < 10; i++) {
+				userCacheService.getUserByIdFromCache(u.getId());
+			}
+			PrintUtil.formatPrint("userFromCache: " + userFromCache.toString());
 			watch.stop();
 
 			long t2 = watch.getTotalTimeMillis();
-			System.out.println(" -> 从缓存中加载User且执行3次,而加载时间为: " + t2);
+			PrintUtil.formatPrint("从缓存中加载User且执行10次,而加载时间为: " + t2);
 			
 			//manualLoadUserFromCache
-			User manualLoadUserFromCache = cache.get(u.getId().toString(), SerializationType.JAVA);
+			User manualLoadUserFromCache = cache.get(u.getId().toString(), SerializationType.PROVIDER);//SerializationType.PROVIDER |　SerializationType.JAVA
 			if (manualLoadUserFromCache != null) {
-				System.out.println(" -> manualLoadUser: " + manualLoadUserFromCache.toString());
+				PrintUtil.formatPrint("manualLoadUser: " + manualLoadUserFromCache.toString());
 			}
 
 			Assert.assertTrue(t1 > t2);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mtea.ssm.dao.UserDao;
 import com.mtea.ssm.model.User;
+import com.mtea.ssm.util.PrintUtil;
 
 /**
  * UserDao测试类
@@ -28,6 +29,7 @@ public class UserDaoTest extends AbstractTestCase {
 	public void save() {
 		User u = mockUser();
 		userDao.save(u);
+		PrintUtil.formatPrint("新插入User: " + u.toString());
 		Assert.assertTrue(u.getId() != null);
 	}
 
@@ -36,6 +38,7 @@ public class UserDaoTest extends AbstractTestCase {
 		User u = mockUser();
 		userDao.save(u);
 		User result = userDao.findById(u.getId());
+		PrintUtil.formatPrint("根据findById()获得的User: " + u.toString());
 		Assert.assertTrue(result.getId().longValue() == u.getId().longValue());
 	}
 

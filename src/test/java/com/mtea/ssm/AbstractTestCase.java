@@ -7,13 +7,5 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
-//@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public abstract class AbstractTestCase extends AbstractJUnit4SpringContextTests {
-	
-/*
- * @BeforeTransaction
- * @AfterTransaction
- */
-	
 }

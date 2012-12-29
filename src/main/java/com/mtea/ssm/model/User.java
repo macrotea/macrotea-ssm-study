@@ -29,8 +29,12 @@ public class User implements Serializable {
 	public User() {
 		super();
 	}
-
-	@CacheKeyMethod
+	
+    @CacheKeyMethod
+    public String cacheKey() {
+        return id.toString();
+    }
+    
 	public Long getId() {
 		return id;
 	}
@@ -75,5 +79,5 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", addTime=" + addTime + "]";
 	}
-	
+
 }
