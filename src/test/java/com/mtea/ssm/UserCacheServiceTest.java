@@ -71,6 +71,8 @@ public class UserCacheServiceTest extends AbstractTestCase {
 				PrintUtil.formatPrint("manualLoadUser: " + manualLoadUserFromCache.toString());
 			}
 
+			// NOTICE lqy/2012-12-29 
+			//若在缓存中,则为true,否则说明缓存不起效果
 			Assert.assertTrue(t1 > t2);
 			
 			Thread.sleep(5000);
